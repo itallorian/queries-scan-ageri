@@ -1,0 +1,7 @@
+{
+  "schemaType": "LAUNCHER",
+  "id": "launcher",
+  "displayName": "Queries Scan | AGERI",
+  "description": "Query scanner for alerts and dashboards. With filter for metrics.",
+  "rootNerdletId": "b1a5ff80-0927-4d51-9c57-c14a66ddd6ab.home"
+}

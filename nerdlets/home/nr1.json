@@ -1,0 +1,6 @@
+{
+  "schemaType": "NERDLET",
+  "id": "home",
+  "displayName": "Queries Scan | AGERI",
+  "description": "Query scanner for alerts and dashboards. With filter for metrics."
+}
