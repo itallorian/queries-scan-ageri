@@ -1,19 +1,13 @@
 {
   "tagline": "Welcome to Queries Scan!",
   "details": "Query scanner for alerts and dashboards. With filter for metrics/all query.",
-  "categoryTerms": [],
+  "categoryTerms": ["open source monitoring", "newrelic partner", "logs", "security"],
   "keywords": ["query", "scan", "alerts", "dashboards", "filter metrics usage"],
   "repository": "https://github.com/itallorian/queries-scan-ageri-newrelic",
   "whatsNew": "feat: Add new icons",
   "support": {
     "email": {
-      "address": ""
-    },
-    "issues": {
-      "url": ""
-    },
-    "community": {
-      "url": ""
+      "address": "itallo.rian@ageri.com.br"
     }
   }
 }

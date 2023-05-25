@@ -11,4 +11,4 @@ Fully standalone application.
 
 # How it works
 
-The application carries out internal processes to query the data on the platform, bringing all the alerts and dashboards of the account. Data is formatted and cached from New Relic and local user, allowing reuse of data and non-consumption of New Relic data constantly, bringing 0% impact on data injection.
+The application carries out internal processes to query the data on the platform, bringing all the alerts and dashboards of the account. Data is formatted and cached from New Relic and local user, allowing reuse of data and non-consumption of New Relic data constantly, bringing 0% impact on data ingestion.
