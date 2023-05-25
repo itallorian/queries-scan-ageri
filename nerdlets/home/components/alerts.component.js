@@ -25,7 +25,7 @@ export default class AlertsComponents extends React.Component {
 
         /** Obtem os alertas */
         let forceUpdate = localStorage.getItem("ajflkasSA09fdkl") === "8ads09ASLKAD_2" || localStorage.getItem("ajflkasSA09fdkl") === "8ads09ASLKAD_1";
-        if (localStorage.getItem('anr18DAKdanas_afdds231') === null || forceUpdate) AlertService.GetAll(forceUpdate).then((update) => { if (update) setAlerts() });
+        if (localStorage.getItem('anr18DAKdanas_afdds231') === null || forceUpdate) AlertService.GetAll(forceUpdate, this.props.accountId).then((update) => { if (update) setAlerts() });
         else setAlerts();
     }
 

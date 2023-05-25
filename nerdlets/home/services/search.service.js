@@ -11,10 +11,10 @@ export default class SearchService {
      * Método responsável por obter todos os atributos de métricas
      * @returns {Array} lista de atributos
      */
-    static GetMetricAutocomplete = async () => {
+    static GetMetricAutocomplete = async (accountId) => {
         const result = [];
 
-        const response = await NerdGraphQuery.query({ query: METRIC_KEYS });
+        const response = await NerdGraphQuery.query({ query: METRIC_KEYS(accountId) });
 
         if (response.data.actor.nrql.results != undefined && response.data.actor.nrql.results.length > 0) response.data.actor.nrql.results.map(v => result.push(v.key));
 

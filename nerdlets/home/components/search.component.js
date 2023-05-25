@@ -18,7 +18,7 @@ export default class SearchComponent extends React.Component {
 
     /** Função executada quando o componente é criado */
     componentDidMount() {
-        SearchService.GetMetricAutocomplete().then(metrics => this.setState({ Autocomplete: metrics }));
+        SearchService.GetMetricAutocomplete(this.props.accountId).then(metrics => this.setState({ Autocomplete: metrics }));
     }
 
     /**

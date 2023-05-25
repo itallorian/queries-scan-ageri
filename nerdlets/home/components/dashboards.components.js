@@ -37,7 +37,7 @@ export default class DashboardComponents extends React.Component {
 
         /** Obtem os dashboards/widgets */
         let forceUpdate = localStorage.getItem("ajflkasSA09fdkl") === "8ads09ASLKAD_1" || localStorage.getItem("ajflkasSA09fdkl") === "8ads09ASLKAD_2";
-        if (localStorage.getItem('sadkflsafjdsk_afdds231') === null || forceUpdate) DashboardService.GetAll(forceUpdate).then((update) => { if (update) setDashs() });
+        if (localStorage.getItem('sadkflsafjdsk_afdds231') === null || forceUpdate) DashboardService.GetAll(forceUpdate, this.props.accountId).then((update) => { if (update) setDashs() });
         else setDashs();
     }
 

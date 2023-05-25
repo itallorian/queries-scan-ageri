@@ -1,3 +1,1 @@
-export const ACCOUNT_ID = 0;
-export const GITHUB_TOKEN = "";
-export const KEYS = ["your-key-0", "your-key-1", "your-key-2"];
+export const KEYS = ["your-key-01", "your-key-02", "your-key-03"]
