@@ -1,6 +1,7 @@
 import React from "react";
 import { Spinner } from 'nr1';
 import DashboardService from "../services/dashboard.service";
+import ExportComponent from './shared/export.component';
 
 export default class DashboardComponents extends React.Component {
     /**
@@ -11,7 +12,7 @@ export default class DashboardComponents extends React.Component {
         super(props);
 
         /** Estados iniciais */
-        this.state = { Dashboards: { details: [], totalWidgets: 0 }, Loading: true, lastSearchTerm: "" }
+        this.state = { Dashboards: { details: [], totalWidgets: 0 }, Loading: true, lastSearchTerm: "", csv: [] }
     }
 
     componentDidMount() {
@@ -19,11 +20,20 @@ export default class DashboardComponents extends React.Component {
         const setDashs = () => {
             let details = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('sadkflsafjdsk_afdds231'))))).details;
             let totalWidgets = 0;
+            let csv = [["dashboard name", "page number", "widget name", "queries", "permalink"]]
 
             details.forEach(element => {
-                element.widgets.forEach(a => {
+                let dashInfoOk = false;
+                let dashInfo = [element.dashboard, "", "", "", element.link];
+                element.widgets.forEach((a, i) => {
                     a.widgets.forEach(s => {
                         if (s.rawConfiguration.nrqlQueries != undefined && s.rawConfiguration.nrqlQueries.length > 0) {
+                            if (dashInfoOk === false) {
+                                csv.push(dashInfo);
+                                dashInfoOk = true;
+                            }
+                            
+                            csv.push(["", `${i + 1}`, s.title, s.rawConfiguration.nrqlQueries.map(q => `${q.query}, `), a.link])
                             element.totalWidgets = s.rawConfiguration.nrqlQueries.length;
                             totalWidgets += s.rawConfiguration.nrqlQueries.length;
                         }
@@ -32,7 +42,7 @@ export default class DashboardComponents extends React.Component {
             });
 
             details = details.sort((a, b) => b.widgets.length - a.widgets.length);
-            this.setState({ Dashboards: { details, totalWidgets }, Loading: false })
+            this.setState({ Dashboards: { details, totalWidgets }, Loading: false, csv })
         };
 
         /** Obtem os dashboards/widgets */
@@ -45,6 +55,7 @@ export default class DashboardComponents extends React.Component {
         if (localStorage.getItem('sadkflsafjdsk_afdds231') !== null && this.props.searchTerm !== this.state.lastSearchTerm) {
             let details = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('sadkflsafjdsk_afdds231'))))).details;
             let totalWidgets = 0;
+            let csv = [["dashboard name", "page number", "widget name", "queries", "permalink"]]
 
             if (this.props.searchTerm !== "0" && this.props.searchTerm !== "") {
                 let newDetail = [];
@@ -69,10 +80,17 @@ export default class DashboardComponents extends React.Component {
             }
 
             details.forEach(element => {
+                let dashInfoOk = false;
+                let dashInfo = [element.dashboard, "", "", "", element.link];
                 element.totalWidgets = 0;
-                element.widgets.forEach(a => {
+                element.widgets.forEach((a, i) => {
                     a.widgets.forEach(s => {
                         if (s.rawConfiguration.nrqlQueries != undefined && s.rawConfiguration.nrqlQueries.length > 0) {
+                            if (dashInfoOk === false) {
+                                csv.push(dashInfo);
+                                dashInfoOk = true;
+                            }
+                            csv.push(["", `${i + 1}`, s.title, s.rawConfiguration.nrqlQueries.map(q => `${q.query}, `), a.link])
                             element.totalWidgets += s.rawConfiguration.nrqlQueries.length > 0 ? 1 : 0;
                             totalWidgets += s.rawConfiguration.nrqlQueries.length > 0 ? 1 : 0;
                         }
@@ -80,18 +98,20 @@ export default class DashboardComponents extends React.Component {
                 })
             });
             details = details.sort((a, b) => b.widgets.length - a.widgets.length);
-            this.setState({ Dashboards: { details, totalWidgets }, lastSearchTerm: this.props.searchTerm });
+            this.setState({ Dashboards: { details, totalWidgets }, lastSearchTerm: this.props.searchTerm, csv });
         }
     }
 
     render() {
         return this.state.Loading === true ? <Spinner type={Spinner.TYPE.DOT} /> : <>
+            {console.log(this.state.Dashboards)}
             {/* Informações */}
             <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '30px 10px', fontWeight: 'bold', fontSize: '15px' }}>
                 <span style={{ background: "#dad9d9", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '18px 12px' }}>Dashboards: {this.state.Dashboards.details.length}</span>
                 <span style={{ background: "#dad9d9", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '18px 12px' }}>Widgets/Charts: {this.state.Dashboards.totalWidgets}</span>
             </div>
 
+            <div style={{ display: 'flex', justifyContent: 'end', padding: '10px' }}><ExportComponent data={this.state.csv} name={`dashboards-${this.props.accountId}.csv`} /></div>
             {this.state.Dashboards.details.map((item, index) => <div key={index} style={{ marginBottom: '15px', background: "radial-gradient(#ffffff, #dad9d9)", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '10px', maxHeight: '500px', overflowX: 'hidden', overflowY: 'auto' }}>
                 <h4 style={{ padding: '10px 0' }}>{item.dashboard} <span style={{ fontSize: '10px', margin: '0 10px' }}><a href={item.link} target='_blank'></a></span></h4>
                 <span>Widgets/Charts: {item.totalWidgets}</span>
