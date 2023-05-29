@@ -4,6 +4,7 @@ import SearchComponent from './components/search.component';
 import AlertsComponents from './components/alerts.component';
 import DashboardComponents from './components/dashboards.components';
 import Logo from './assets/ageri.svg';
+import CacheService from './services/cache.service';
 
 nerdlet.setConfig({
     accountPicker: true,
@@ -26,7 +27,7 @@ export default class HomeNerdlet extends React.Component {
     /** Estados iniciais */
     this.state = { searchTerm: "0", accountId: 0 }
   }
-
+  
   /**
    * Renderizador
    * @returns JSX

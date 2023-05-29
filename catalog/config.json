@@ -4,7 +4,7 @@
   "categoryTerms": ["open source monitoring", "newrelic partner", "logs", "security"],
   "keywords": ["query", "scan", "alerts", "dashboards", "filter metrics usage"],
   "repository": "https://github.com/itallorian/queries-scan-ageri-newrelic",
-  "whatsNew": "feat: Add new icons",
+  "whatsNew": "feat: export data to csv and show account id and name to dashboard",
   "support": {
     "email": {
       "address": "itallo.rian@ageri.com.br"

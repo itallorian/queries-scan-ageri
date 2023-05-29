@@ -35,11 +35,10 @@ export default class DashboardService {
 
                 await Promise.all(all.map(async (item) => {
                     let details = await NerdGraphQuery.query({ query: DASHBOARD_CHARTS_QUERY(item.guid) });
-
                     if (details.data.actor.entities[0].pages != undefined && details.data.actor.entities[0].pages.length > 0) {
                         let widgets = details.data.actor.entities[0].pages;
                         widgets.map(v => v.link = `https://one.newrelic.com/redirect/entity/${v.guid}`);
-                        dashboards.push({ dashboard: details.data.actor.entities[0].name, link: details.data.actor.entities[0].permalink, widgets });
+                        dashboards.push({ dashboard: details.data.actor.entities[0].name, link: details.data.actor.entities[0].permalink, widgets, accountId: item.account.id, account: item.account.name });
                     }
                 }));
 
@@ -56,7 +55,7 @@ export default class DashboardService {
             }
         } else {
             currentCache = SecurityService.Decode(currentCache);
-            localStorage.setItem('sadkflsafjdsk_afdds231',  btoa(unescape(encodeURIComponent(currentCache))));
+            localStorage.setItem('sadkflsafjdsk_afdds231', btoa(unescape(encodeURIComponent(currentCache))));
 
             return true;
         }

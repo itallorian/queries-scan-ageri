@@ -12,6 +12,9 @@ export const DASHBOARDS_QUERY = (cursor) => `query {
           guid
           name
           permalink
+          account {
+            name
+          }
         }
         nextCursor
       }

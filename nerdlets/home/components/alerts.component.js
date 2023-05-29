@@ -79,7 +79,7 @@ export default class AlertsComponents extends React.Component {
                         {this.state.Alerts.map((item, index) => <GridItem columnSpan={6}>
                             <div key={index} style={{ minHeight: '100px', display: 'flex', 'justifyContent': 'center', flexDirection: 'column', margin: '20px 0', background: 'rgba(255, 255, 255, 0.7)', padding: '10px', border: '1px solid #eae8e8', borderRadius: '5px' }}>
                                 <h4 style={{ padding: '10px 0' }}>{decodeURIComponent(escape(item.entity.name))} <span style={{ fontSize: '10px', margin: '0 10px' }}><a href={item.entity.permalink} target='_blank'></a></span></h4>
-                                <span style={{ margin: '5px 0', fontSize: '12px', padding: '10px 5px', overflowWrap: 'break-word' }}>{item.nrql.query}</span>
+                                <span style={{ margin: '5px 0', fontSize: '12px', padding: '10px 5px', overflowWrap: 'break-word' }}>{decodeURIComponent(escape(item.nrql.query))}</span>
                             </div>
                         </GridItem>)}
                     </Grid>
