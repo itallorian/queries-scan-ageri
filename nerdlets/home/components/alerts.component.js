@@ -16,7 +16,7 @@ export default class AlertsComponents extends React.Component {
         super(props);
 
         /** Estados iniciais */
-        this.state = { Alerts: [], Loading: true, lastSearchTerm: "", csv: [] }
+        this.state = { Alerts: [], Loading: true, lastSearchTerm: "", lastSelectedAccount: "", csv: [] }
     }
 
     /** Função executada quando o componente é criado */
@@ -43,8 +43,9 @@ export default class AlertsComponents extends React.Component {
     /** Função executada quando o componente é atualizado */
     componentDidUpdate() {
         /** Filtra os alertas de acordo com o termo de pesquisa */
-        if (localStorage.getItem('anr18DAKdanas_afdds231') !== null && this.props.searchTerm !== this.state.lastSearchTerm) {
+        if (localStorage.getItem('anr18DAKdanas_afdds231') !== null && (this.props.searchTerm !== this.state.lastSearchTerm || this.props.selectedAccount !== this.state.lastSelectedAccount)) {
             let alerts = JSON.parse(atob(localStorage.getItem('anr18DAKdanas_afdds231'))).details;
+            alerts = this.props.selectedAccount === "0" || this.props.selectedAccount === "" ? alerts : alerts.filter(item => item.entity.account.id == this.props.selectedAccount);
             alerts = this.props.searchTerm === "0" || this.props.searchTerm === "" ? alerts : alerts.filter(item => item.nrql.query.toLowerCase().trim().includes(this.props.searchTerm.toLowerCase().trim()));
 
             let csv = [["name", "enabled", "query", "permalink"]];
@@ -54,7 +55,7 @@ export default class AlertsComponents extends React.Component {
                 csv.push(row);
             });
 
-            this.setState({ Alerts: alerts, lastSearchTerm: this.props.searchTerm, csv: csv })
+            this.setState({ Alerts: alerts, lastSearchTerm: this.props.searchTerm, csv: csv, lastSelectedAccount: this.props.selectedAccount })
         }
     }
 
@@ -74,11 +75,12 @@ export default class AlertsComponents extends React.Component {
             {/* Alertas com query */}
             {this.state.Alerts.length > 0 ? <>
                 <div style={{ display: 'flex', justifyContent: 'end', padding: '10px' }}><ExportComponent data={this.state.csv} name={`alerts-${this.props.accountId}.csv`} /></div>
-                <div style={{ background: "radial-gradient(#ffffff, #dad9d9)", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '10px' }}>
+                <div style={{ background: "#dad9d9", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '10px' }}>
                     <Grid>
                         {this.state.Alerts.map((item, index) => <GridItem columnSpan={6}>
                             <div key={index} style={{ minHeight: '100px', display: 'flex', 'justifyContent': 'center', flexDirection: 'column', margin: '20px 0', background: 'rgba(255, 255, 255, 0.7)', padding: '10px', border: '1px solid #eae8e8', borderRadius: '5px' }}>
                                 <h4 style={{ padding: '10px 0' }}>{decodeURIComponent(escape(item.entity.name))} <span style={{ fontSize: '10px', margin: '0 10px' }}><a href={item.entity.permalink} target='_blank'></a></span></h4>
+                                <span>Conta: {`${item.entity.account.id} - ${item.entity.account.name}`}</span><br />
                                 <span style={{ margin: '5px 0', fontSize: '12px', padding: '10px 5px', overflowWrap: 'break-word' }}>{decodeURIComponent(escape(item.nrql.query))}</span>
                             </div>
                         </GridItem>)}

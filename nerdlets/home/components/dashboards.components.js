@@ -12,7 +12,7 @@ export default class DashboardComponents extends React.Component {
         super(props);
 
         /** Estados iniciais */
-        this.state = { Dashboards: { details: [], totalWidgets: 0 }, Loading: true, lastSearchTerm: "", csv: [] }
+        this.state = { Dashboards: { details: [], totalWidgets: 0 }, Loading: true, lastSearchTerm: "", lastSelectedAccount: "", csv: [] }
     }
 
     componentDidMount() {
@@ -52,10 +52,12 @@ export default class DashboardComponents extends React.Component {
     }
 
     componentDidUpdate() {
-        if (localStorage.getItem('sadkflsafjdsk_afdds231') !== null && this.props.searchTerm !== this.state.lastSearchTerm) {
+        if (localStorage.getItem('sadkflsafjdsk_afdds231') !== null && (this.props.searchTerm !== this.state.lastSearchTerm || this.props.selectedAccount !== this.state.lastSelectedAccount)) {
             let details = JSON.parse(decodeURIComponent(escape(atob(localStorage.getItem('sadkflsafjdsk_afdds231'))))).details;
             let totalWidgets = 0;
             let csv = [["dashboard name", "page number", "widget name", "queries", "permalink"]]
+
+            details = this.props.selectedAccount === "0" || this.props.selectedAccount === "" ? details : details.filter(item => item.accountId == this.props.selectedAccount);
 
             if (this.props.searchTerm !== "0" && this.props.searchTerm !== "") {
                 let newDetail = [];
@@ -97,14 +99,14 @@ export default class DashboardComponents extends React.Component {
                     })
                 })
             });
+
             details = details.sort((a, b) => b.widgets.length - a.widgets.length);
-            this.setState({ Dashboards: { details, totalWidgets }, lastSearchTerm: this.props.searchTerm, csv });
+            this.setState({ Dashboards: { details, totalWidgets }, lastSearchTerm: this.props.searchTerm, lastSelectedAccount: this.props.selectedAccount, csv });
         }
     }
 
     render() {
         return this.state.Loading === true ? <Spinner type={Spinner.TYPE.DOT} /> : <>
-            {console.log(this.state.Dashboards)}
             {/* Informações */}
             <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', padding: '30px 10px', fontWeight: 'bold', fontSize: '15px' }}>
                 <span style={{ background: "#dad9d9", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '18px 12px' }}>Dashboards: {this.state.Dashboards.details.length}</span>
@@ -116,7 +118,6 @@ export default class DashboardComponents extends React.Component {
                 <h4 style={{ padding: '10px 0' }}>{item.dashboard} <span style={{ fontSize: '10px', margin: '0 10px' }}><a href={item.link} target='_blank'></a></span></h4>
                 <span>Conta: {`${item.accountId} - ${item.account}`}</span><br />
                 <span>Widgets/Charts: {item.totalWidgets}</span>
-                {console.log(item)}
                 {item.widgets.map(w => <div key={w.guid} style={{ margin: '15px 0' }}>
                     {w.widgets.map(x => <div key={x.id}>
                         {x.rawConfiguration.nrqlQueries != undefined && x.rawConfiguration.nrqlQueries.length > 0 ? <>

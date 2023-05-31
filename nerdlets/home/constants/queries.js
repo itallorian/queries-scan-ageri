@@ -63,3 +63,12 @@ export const ALERTS_QUERY = (cursor, accountId) => `query {
       }
     }
   }`;
+
+export const ACCOUNTS_QUERY = `query {
+  actor {
+    accounts(scope: GLOBAL) {
+      id
+      name
+    }
+  }
+}`;

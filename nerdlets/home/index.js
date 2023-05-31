@@ -4,11 +4,11 @@ import SearchComponent from './components/search.component';
 import AlertsComponents from './components/alerts.component';
 import DashboardComponents from './components/dashboards.components';
 import Logo from './assets/ageri.svg';
-import CacheService from './services/cache.service';
+import AccountComponent from './components/account.component';
 
 nerdlet.setConfig({
-    accountPicker: true,
-    timePicker: false
+  accountPicker: false,
+  timePicker: false
 });
 
 /**
@@ -25,9 +25,9 @@ export default class HomeNerdlet extends React.Component {
     super(props);
 
     /** Estados iniciais */
-    this.state = { searchTerm: "0", accountId: 0 }
+    this.state = { searchTerm: "0", accountId: 0, selectedAccount: "0" }
   }
-  
+
   /**
    * Renderizador
    * @returns JSX
@@ -57,9 +57,10 @@ export default class HomeNerdlet extends React.Component {
               <main id='cost-reduction-main'>
                 <div style={{ padding: '15px' }}>
                   <div style={{ display: 'flex', justifyContent: 'end' }} >
-                    <Button onClick={() => forceUpdate()} type={Button.TYPE.PRIMARY}>
-                      Reload
-                    </Button>
+                      <AccountComponent onChange={(value) => this.setState({selectedAccount: value})} />
+                      <Button onClick={() => forceUpdate()} type={Button.TYPE.PRIMARY}>
+                        Reload
+                      </Button>
                   </div>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <a href='https://ageri.com.br' target='_blank' id='logo-ageri'><img width="200" src={Logo} /></a>
@@ -69,10 +70,10 @@ export default class HomeNerdlet extends React.Component {
                 <div id='cost-reduction-grid-main' style={{ padding: '10px' }}>
                   <Tabs defaultValue="tab-3">
                     <TabsItem className="tab-nr1-ageri" value="tab-1" label="Alertas">
-                      <AlertsComponents searchTerm={this.state.searchTerm}  accountId={platformState.accountId} />
+                      <AlertsComponents searchTerm={this.state.searchTerm} accountId={platformState.accountId} selectedAccount={this.state.selectedAccount} />
                     </TabsItem>
                     <TabsItem className="tab-nr1-ageri" value="tab-2" label="Dashboards">
-                      <DashboardComponents searchTerm={this.state.searchTerm} accountId={platformState.accountId} />
+                      <DashboardComponents searchTerm={this.state.searchTerm} accountId={platformState.accountId} selectedAccount={this.state.selectedAccount} />
                     </TabsItem>
                   </Tabs>
                 </div>
