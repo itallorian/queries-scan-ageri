@@ -114,7 +114,7 @@ export default class DashboardComponents extends React.Component {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'end', padding: '10px' }}><ExportComponent data={this.state.csv} name={`dashboards-${this.props.accountId}.csv`} /></div>
-            {this.state.Dashboards.details.map((item, index) => <div key={index} style={{ marginBottom: '15px', background: "radial-gradient(#ffffff, #dad9d9)", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '10px', maxHeight: '500px', overflowX: 'hidden', overflowY: 'auto' }}>
+            {this.state.Dashboards.details.map((item, index) => <div key={index} style={{ marginBottom: '15px', background: "#dad9d9", border: '1px solid rgba(155, 155, 155, 0.2)', borderRadius: '5px', padding: '10px', maxHeight: '500px', overflowX: 'hidden', overflowY: 'auto' }}>
                 <h4 style={{ padding: '10px 0' }}>{item.dashboard} <span style={{ fontSize: '10px', margin: '0 10px' }}><a href={item.link} target='_blank'></a></span></h4>
                 <span>Conta: {`${item.accountId} - ${item.account}`}</span><br />
                 <span>Widgets/Charts: {item.totalWidgets}</span>
