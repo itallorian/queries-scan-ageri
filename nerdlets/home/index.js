@@ -7,7 +7,7 @@ import Logo from './assets/ageri.svg';
 import AccountComponent from './components/account.component';
 
 nerdlet.setConfig({
-  accountPicker: false,
+  accountPicker: true,
   timePicker: false
 });
 
